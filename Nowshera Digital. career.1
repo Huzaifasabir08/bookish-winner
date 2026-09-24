@@ -1,0 +1,47 @@
+# Nowshera Digital Recruitment Portal
+
+A full-stack recruitment website for candidates, recruiters, and hiring managers. It replaces scattered email, WhatsApp, and spreadsheet applications with a secure hiring pipeline and human-led CV review.
+
+## Features
+
+- Candidate accounts, PDF CV uploads, applications, withdrawals, and application tracking.
+- Immutable CV snapshots attached to each application.
+- Admin job management, recruiter assignments, vacancy limits, deadlines, and dashboards.
+- Strict `Applied → Shortlisted → Interview → Offer → Hired` progression with rejection before final stages.
+- One-hour interview scheduling with past-time and recruiter-overlap protection.
+- Private recruiter notes and server-enforced role access controls.
+- Idempotent email outbox for application, interview, hired, rejected, and invitation notifications.
+- AI CV summaries with a profile, requirements mentioned/not found, and three interview questions.
+- AI safety rules: no scoring, ranking, hiring decisions, protected-trait summaries, or stage changes.
+- Retryable AI failures that never block applications or duplicate candidate emails.
+
+## Stack
+
+React/Vinext, Cloudflare Workers, D1/SQLite, R2, Drizzle, and server-side Gemini/Resend integrations.
+
+## Run locally
+
+```text
+node scripts/setup-local.mjs
+npm install
+npm run dev
+node scripts/seed-local.mjs
+```
+
+Open `http://localhost:5173/`. Fictional local credentials are written to `LOCAL-ACCESS.md`. Local emails appear in Admin → Automation → Local test mailbox.
+
+## Test
+
+```text
+node tests/acceptance.test.mjs
+```
+
+The acceptance suite covers all 14 requested checks plus session invalidation after recruiter deactivation. It uses fictional CVs and mocked AI responses; no real candidate data is sent to an AI service.
+
+## Production configuration
+
+Set a verified email sender and server-side AI/email secrets from `.env.example`. Never commit `.dev.vars`, `.local`, real CVs, or API keys.
+
+## Scope exclusions
+
+Job-board posting, video interviews, offer letters/e-signatures, payroll, real SMS/WhatsApp messages, mobile apps, and multi-company tenancy are outside this project.
